@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import Layout from '../components/Layout'
 
 const Home: NextPageWithLayout = () => {
-    return <h2 className="h-screen">Hello merch shop</h2>
+    return <h2 className="h-screen">Hello index</h2>
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {

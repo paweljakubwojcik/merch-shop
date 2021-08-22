@@ -3,11 +3,13 @@ import Link from 'next/link'
 import { Menu as MenuIcon, X as XIcon, ShoppingCart as ShopIcon } from 'react-feather'
 import Button from './Button'
 import { CSSTransition } from 'react-transition-group'
+import FloatingButton from './FloatingButton'
+import { useRouter } from 'next/dist/client/router'
 
 const routes = [
     {
-        to: '/',
-        name: 'Home',
+        to: '/about',
+        name: 'About',
     },
     {
         to: '/shop',
@@ -20,6 +22,8 @@ const routes = [
 ]
 
 export default function Navbar() {
+    const { pathname } = useRouter()
+
     const [menuOpen, setMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
 
@@ -32,14 +36,22 @@ export default function Navbar() {
         return () => document.removeEventListener('scroll', handleScroll)
     }, [])
 
+    useEffect(() => {
+        setMenuOpen(false)
+    }, [pathname])
+
     return (
         <>
             <div
-                className={`flex items-center justify-between px-4 md:px-8 shadow-md mx-2 text-sm sticky top-0 bg-white ${
+                className={`flex items-center justify-between px-4 md:px-8 shadow-md mx-2 text-sm sticky z-10 top-0 bg-white ${
                     scrolled ? 'h-16' : 'h-24'
                 } transition-all`}
             >
-                <h1 className="font-bold text-2xl">Logo</h1>
+                <h1 className="font-bold text-2xl">
+                    <Link href="/">
+                        <a>Logo</a>
+                    </Link>
+                </h1>
 
                 <nav className="hidden w-full absolute left-0 justify-center md:flex pointer-events-none">
                     <Links className="space-x-8  pointer-events-auto" />
@@ -56,6 +68,9 @@ export default function Navbar() {
                     <MobileMenu className="md:hidden" />
                 </CSSTransition>
             </div>
+            <FloatingButton className="md:hidden fixed border-none bottom-10 right-8 z-30">
+                <ShopIcon />
+            </FloatingButton>
         </>
     )
 }
@@ -66,9 +81,6 @@ const MobileMenu = ({ className }: ComponentPropsWithoutRef<'div'>) => {
             className={`fixed bg-white w-screen h-screen flex flex-col justify-center items-center top-0 left-0 space-y-8 ${className}`}
         >
             <Links className="flex-col items-center space-y-8" />
-            <Button>
-                <div>Koszyk</div> <ShopIcon />
-            </Button>
         </div>
     )
 }
