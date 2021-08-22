@@ -4,8 +4,8 @@
 
 @layer utilities {
     .font-bold {
-        font-family: LuloCleanOne-Bold, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-            Droid Sans, Helvetica Neue, sans-serif;
+        font-family: LuloCleanOne-Bold, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+            Helvetica Neue, sans-serif;
 
         font-weight: bold;
     }
@@ -15,8 +15,8 @@ html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, LuloCleanOne, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-        Droid Sans, Helvetica Neue, sans-serif;
+    font-family: -apple-system, LuloCleanOne, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+        Helvetica Neue, sans-serif;
 }
 
 a {
@@ -35,4 +35,9 @@ h4,
 h5,
 h6 {
     @apply: bold;
+}
+
+*:focus {
+    outline-style: solid;
+    outline-width: 1px;
 }

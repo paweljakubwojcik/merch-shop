@@ -1,0 +1,14 @@
+.opacity-enter {
+    opacity: 0;
+}
+.opacity-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+.opacity-exit {
+    opacity: 1;
+}
+.opacity-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}

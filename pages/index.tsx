@@ -1,7 +1,12 @@
-import type { NextPage } from 'next'
+import { ReactElement } from 'react'
+import Layout from '../components/Layout'
 
-const Home: NextPage = () => {
-    return <h1 className="font-bold">Hello merch shop</h1>
+const Home: NextPageWithLayout = () => {
+    return <h2 className="h-screen">Hello merch shop</h2>
+}
+
+Home.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>
 }
 
 export default Home
