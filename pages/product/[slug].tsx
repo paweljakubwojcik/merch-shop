@@ -5,6 +5,7 @@ import getProductsSlugs from '../../lib/graphcms/get-products-slugs'
 import getProductBySlug from '../../lib/graphcms/get-product-by-slug'
 import Image from 'next/image'
 import Button from '../../components/Button'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
     params,
@@ -15,7 +16,7 @@ export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
     const { product } = await getProductBySlug({ locale, slug })
 
     return {
-        props: { product },
+        props: { product, ...(await serverSideTranslations(locale, ['common'])) },
     }
 }
 
@@ -52,12 +53,14 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
     } = product
 
     return (
-        <article className="flex flex-col items-center justify-items-center md:grid grid-cols-2 grid-rows-2 grid-flow-col-dense w-full px-4  ">
+        <article className="flex flex-col items-center justify-items-center md:grid grid-cols-2 grid-rows-2 grid-flow-col-dense w-full px-4 ">
             <div className="flex justify-center items-center flex-col space-y-4 text-sm col-start-2 py-20 max-w-lg">
-                <div className="flex space-x-4 text-xs text-gray-600">
+                <div className="flex flex-wrap justify-center space-x-4 text-xs text-gray-600">
                     {categories.concat(collections).map((c, i) => (
                         <>
-                            {i !== 0 && <div>{' | '}</div>}
+                            {i !== 0 && (
+                                <div className="block bg-current w-1 h-1 rounded-full my-auto"></div>
+                            )}
                             <div className="" key={c.id}>
                                 {c.name}
                             </div>
@@ -70,39 +73,41 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
                 <p>{price}PLN</p>
                 <Button>Dodaj do koszyka</Button>
             </div>
-            <div className="md:p-10 w-full">
-                <Image
-                    src={image.url}
-                    alt={name}
-                    placeholder="blur"
-                    blurDataURL={image.placeholderUrl}
-                    layout="responsive"
-                    objectFit="cover"
-                    width={25}
-                    height={30}
-                />
-            </div>
+
+            <StyledImage image={image} alt={name} />
+
             <section className="flex justify-center items-center flex-col space-y-4 py-20 max-w-lg ">
                 <header>
                     <h2 className="font-bold">description</h2>
                 </header>
                 <p className="text-center text-xs">{description}</p>
             </section>
-            <div className="md:p-10 w-full">
-                <Image
-                    src={image.url}
-                    alt={name}
-                    placeholder="blur"
-                    blurDataURL={image.placeholderUrl}
-                    layout="responsive"
-                    objectFit="cover"
-                    width={25}
-                    height={30}
-                />
-            </div>
+
+            <StyledImage image={image} alt={name} />
         </article>
     )
 }
+
+const StyledImage = ({
+    image,
+    alt,
+}: {
+    image: { url: string; placeholderUrl: string }
+    alt: string
+}) => (
+    <div className="md:p-10 w-full">
+        <Image
+            src={image.url}
+            alt={alt}
+            placeholder="blur"
+            blurDataURL={image.placeholderUrl}
+            layout="responsive"
+            objectFit="cover"
+            width={25}
+            height={30}
+        />
+    </div>
+)
 
 Product.getLayout = function getLayout(page: ReactElement) {
     return <Layout>{page}</Layout>

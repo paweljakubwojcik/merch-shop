@@ -7,6 +7,7 @@ import SideMenu from '../components/SideMenu'
 import getAllCategories from '../lib/graphcms/get-all-categories'
 import getAllCollections from '../lib/graphcms/get-all-collections'
 import getAllProducts from '../lib/graphcms/get-all-products'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export const getStaticProps: GetStaticProps<{
     products: Array<ProductData>
@@ -18,7 +19,12 @@ export const getStaticProps: GetStaticProps<{
     const { collections } = await getAllCollections({ locale })
 
     return {
-        props: { products, categories, collections }, // will be passed to the page component as props
+        props: {
+            products,
+            categories,
+            collections,
+            ...(await serverSideTranslations(locale, ['common'])),
+        }, // will be passed to the page component as props
     }
 }
 

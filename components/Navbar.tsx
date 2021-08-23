@@ -5,6 +5,7 @@ import Button from './Button'
 import { CSSTransition } from 'react-transition-group'
 import FloatingButton from './FloatingButton'
 import { useRouter } from 'next/dist/client/router'
+import { useTranslation } from 'next-i18next'
 
 const routes = [
     {
@@ -23,6 +24,7 @@ const routes = [
 
 export default function Navbar() {
     const { pathname } = useRouter()
+    const { t } = useTranslation(['common'])
 
     const [menuOpen, setMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
@@ -58,7 +60,8 @@ export default function Navbar() {
                 </nav>
 
                 <Button className="hidden md:flex">
-                    <div>Koszyk</div> <ShopIcon />
+                    <div>{t('Card')}</div>
+                    <ShopIcon />
                 </Button>
 
                 <button className="md:hidden relative z-50" onClick={() => setMenuOpen((v) => !v)}>
@@ -88,6 +91,7 @@ const MobileMenu = ({ className }: ComponentPropsWithoutRef<'div'>) => {
 const Links = ({ className }: ComponentPropsWithoutRef<'div'>) => {
     const [hovered, setHovered] = useState<string>()
     const [focused, setFocused] = useState<string>()
+    const { t } = useTranslation(['common'])
 
     return (
         <ul className={`flex group ${className}`}>
@@ -103,7 +107,7 @@ const Links = ({ className }: ComponentPropsWithoutRef<'div'>) => {
                     onBlurCapture={() => setFocused('')}
                 >
                     <Link href={to}>
-                        <a>{name}</a>
+                        <a>{t(name)}</a>
                     </Link>
                 </li>
             ))}
