@@ -87,19 +87,20 @@ const MobileMenu = ({ className }: ComponentPropsWithoutRef<'div'>) => {
 
 const Links = ({ className }: ComponentPropsWithoutRef<'div'>) => {
     const [hovered, setHovered] = useState<string>()
+    const [focused, setFocused] = useState<string>()
 
     return (
         <ul className={`flex group ${className}`}>
             {routes.map(({ to, name }) => (
                 <li
                     key={name}
-                    className={`transition-opacity ${hovered && 'opacity-50'} ${
-                        hovered === name && 'opacity-100'
+                    className={`transition-opacity ${(hovered || focused) && 'opacity-50'} ${
+                        (hovered === name || focused === name) && 'opacity-100'
                     } `}
                     onMouseEnter={() => setHovered(name)}
-                    onFocus={() => setHovered(name)}
+                    onFocusCapture={() => setFocused(name)}
                     onMouseLeave={() => setHovered('')}
-                    onBlur={() => setHovered('')}
+                    onBlurCapture={() => setFocused('')}
                 >
                     <Link href={to}>
                         <a>{name}</a>
