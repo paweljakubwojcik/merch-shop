@@ -10,4 +10,20 @@ declare global {
     type AppPropsWithLayout = AppProps & {
         Component: NextPageWithLayout
     }
+
+    type Category = {
+        id: string
+        name: string
+        slug: string
+    }
+    interface ProductData {
+        images: Array<{ placeholderUrl: string; id: string; url: string }>
+        name: string
+        categories: Array<Category>
+        collections: Array<Category>
+        description: string
+        name: string
+        price: number
+        slug: string
+    }
 }

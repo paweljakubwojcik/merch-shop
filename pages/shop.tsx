@@ -3,24 +3,20 @@ import Link from 'next/link'
 import { ReactElement } from 'react'
 import Image from 'next/image'
 import Layout from '../components/Layout'
-import products from '../data/products.json'
+import getAllProducts from '../lib/graphcms/get-all-products'
 
-type Data = {
-    products: typeof products.data
-}
-
-const Shop: NextPageWithLayout<Data> = ({ products }) => {
+const Shop: NextPageWithLayout<{ products: Array<ProductData> }> = ({ products }) => {
     return (
         <div className="w-full flex">
             <Categories />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full m-4">
-                {products.map(({ name, images, price }, i) => (
+                {products.map(({ name, slug, images, price }, i) => (
                     <div key={i}>
-                        <Link href="/">
+                        <Link href={`/product/${slug}`}>
                             <a className="relative group cursor-pointer  block">
                                 <div className="absolute w-full h-full">
                                     <Image
-                                        src={images[0].url}
+                                        src={images[0].placeholderUrl}
                                         alt={name}
                                         width={200}
                                         height={300}
@@ -30,11 +26,13 @@ const Shop: NextPageWithLayout<Data> = ({ products }) => {
                                 </div>
                                 <Image
                                     src={images[0].url}
+                                    placeholder={'blur'}
+                                    blurDataURL={images[0].placeholderUrl}
                                     alt={name}
                                     width={200}
                                     height={300}
                                     layout="responsive"
-                                    className="block transform group-hover:scale-75 transition-transform "
+                                    className="block transform group-hover:scale-75  transition-transform duration-200 delay-75 "
                                 />
                             </a>
                         </Link>
@@ -50,9 +48,11 @@ const Shop: NextPageWithLayout<Data> = ({ products }) => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async function (context) {
+export const getStaticProps: GetStaticProps = async function ({ locale = 'en' }) {
+    const { products } = await getAllProducts({ locale })
+
     return {
-        props: { products: products.data }, // will be passed to the page component as props
+        props: { products: products }, // will be passed to the page component as props
     }
 }
 
