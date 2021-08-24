@@ -94,19 +94,16 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
             <div className="flex justify-center items-center flex-col space-y-4 text-sm col-start-2 py-20 max-w-lg">
                 <div className="flex flex-wrap justify-center space-x-4 text-xs text-gray-600">
                     {linksAggregated.map((c, i) => (
-                        <>
+                        <React.Fragment key={i}>
                             {i !== 0 && (
-                                <div
-                                    className="block bg-current w-1 h-1 rounded-full my-auto"
-                                    key={i}
-                                ></div>
+                                <div className="block bg-current w-1 h-1 rounded-full my-auto"></div>
                             )}
-                            <div className="" key={c.id}>
+                            <div className="">
                                 <Link href={c.link}>
                                     <a>{c.name}</a>
                                 </Link>
                             </div>
-                        </>
+                        </React.Fragment>
                     ))}
                 </div>
                 <header>

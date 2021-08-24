@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
 // Define a type for the slice state
 
@@ -45,5 +46,8 @@ const { actions, reducer } = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { addProduct, removeProduct, clearShoppingCart } = actions
+
+export const getProductsCount = (state: RootState) =>
+    state.shoppingCart.products.reduce((c, p) => c + p.quantity, 0)
 
 export default reducer

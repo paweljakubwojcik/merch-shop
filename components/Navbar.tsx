@@ -6,6 +6,9 @@ import { CSSTransition } from 'react-transition-group'
 import FloatingButton from './FloatingButton'
 import { useRouter } from 'next/dist/client/router'
 import { useTranslation } from 'next-i18next'
+import { useAppSelector } from '../redux/hooks'
+import Badge from './Badge'
+import { getProductsCount } from '../redux/reducers/shoppingCart'
 
 const routes = [
     {
@@ -23,6 +26,7 @@ const routes = [
 ]
 
 export default function Navbar() {
+    const productsCount = useAppSelector(getProductsCount)
     const { pathname } = useRouter()
     const { t } = useTranslation(['common'])
 
@@ -60,6 +64,7 @@ export default function Navbar() {
                 </nav>
 
                 <Button className="hidden md:flex">
+                    {productsCount > 0 && <Badge>{productsCount}</Badge>}
                     <div>{t('Card')}</div>
                     <ShopIcon />
                 </Button>
@@ -72,6 +77,9 @@ export default function Navbar() {
                 </CSSTransition>
             </div>
             <FloatingButton className="md:hidden fixed border-none bottom-10 right-8 z-30">
+                {productsCount > 0 && (
+                    <Badge className="-translate-x-1/4 -translate-y-1/4 ">{productsCount}</Badge>
+                )}
                 <ShopIcon />
             </FloatingButton>
         </>
