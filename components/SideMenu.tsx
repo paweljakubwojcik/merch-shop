@@ -11,14 +11,16 @@ const SideMenu = ({ collections, categories }: SideMenuProps) => {
 
     return (
         <aside
-            className={`fixed z-20 left-0 text-sm flex-shrink-0 p-8 block bg-white shadow-sm transform ${
+            className={`fixed z-20 left-0 text-sm flex-shrink-0 p-8 block bg-white transform ${
                 open ? 'translate-x-0' : '-translate-x-full'
-            } transition-transform h-full`}
+            } transition-transform h-full 
+                md:sticky md:translate-x-0 md:top-20 
+            `}
         >
             <Button
                 className={`absolute left-full top-0 transform ${
                     open ? '-translate-x-full' : 'translate-x-0'
-                } transition-transform`}
+                } transition-transform md:hidden`}
                 onClick={() => setOpen((v) => !v)}
             >
                 Open
