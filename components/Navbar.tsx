@@ -45,7 +45,7 @@ export default function Navbar() {
     return (
         <>
             <div
-                className={`flex items-center justify-between px-4 md:px-8 shadow-md mx-2 text-sm sticky z-10 top-0 bg-white ${
+                className={`flex items-center justify-between px-4 md:px-8 shadow-md mx-2 text-sm sticky z-30 top-0 bg-white ${
                     scrolled ? 'h-16' : 'h-24'
                 } transition-all`}
             >
