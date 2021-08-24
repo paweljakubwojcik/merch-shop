@@ -20,7 +20,7 @@ const { actions, reducer } = createSlice({
     initialState,
     reducers: {
         addProduct: (state, action: PayloadAction<Product>) => {
-            const productIndex = state.products.findIndex((p) => (p.id = action.payload.id))
+            const productIndex = state.products.findIndex((p) => p.id === action.payload.id)
             if (productIndex !== -1) {
                 state.products[productIndex].quantity++
             } else {
@@ -28,12 +28,12 @@ const { actions, reducer } = createSlice({
             }
         },
         removeProduct: (state, action: PayloadAction<Product>) => {
-            const productIndex = state.products.findIndex((p) => (p.id = action.payload.id))
+            const productIndex = state.products.findIndex((p) => p.id === action.payload.id)
 
             if (productIndex !== -1) {
                 state.products[productIndex].quantity--
                 if (state.products[productIndex].quantity <= 0) {
-                    state.products.filter((p) => (p.id = action.payload.id))
+                    state.products.filter((p) => p.id === action.payload.id)
                 }
             }
         },
