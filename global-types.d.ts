@@ -19,6 +19,7 @@ declare global {
 
     type Collection = Category
     interface ProductData {
+        id: string
         images: Array<{ placeholderUrl: string; id: string; url: string }>
         name: string
         categories: Array<Category>

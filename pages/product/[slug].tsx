@@ -9,6 +9,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 
+import { useAppDispatch } from '../../redux/hooks'
+import { addProduct } from '../../redux/reducers/shoppingCart'
+
 export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
     params,
     locale = 'en',
@@ -55,6 +58,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
         price,
         categories,
         collections,
+        id,
     } = product
 
     const { t } = useTranslation(['product', 'common'])
@@ -71,6 +75,19 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
             id: c.id,
         })),
     ]
+
+    const dispatch = useAppDispatch()
+
+    const handleAddToCard = () =>
+        dispatch(
+            addProduct({
+                id,
+                name,
+                price,
+                quantity: 1,
+                images: product.images,
+            })
+        )
 
     return (
         <article className="flex flex-col items-center justify-items-center md:grid grid-cols-2 grid-rows-2 grid-flow-col-dense w-full px-4 ">
@@ -96,7 +113,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
                     <h2 className="font-bold text-xl">{name}</h2>
                 </header>
                 <p>{price}PLN</p>
-                <Button>{t('Add To Card')}</Button>
+                <Button onClick={handleAddToCard}>{t('Add To Card')}</Button>
             </div>
 
             <StyledImage image={image} alt={name} />

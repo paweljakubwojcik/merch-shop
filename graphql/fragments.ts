@@ -22,6 +22,7 @@ export const PRODUCT_CARD_FRAGMENT = gql`
         price
         slug
         locale
+        id
     }
 `
 export const CATEGORY_FRAGMENT = gql`
