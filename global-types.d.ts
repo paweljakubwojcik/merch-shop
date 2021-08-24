@@ -27,5 +27,6 @@ declare global {
         name: string
         price: number
         slug: string
+        locale: string
     }
 }
