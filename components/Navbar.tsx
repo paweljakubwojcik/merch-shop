@@ -27,7 +27,7 @@ const routes = [
 
 export default function Navbar() {
     const productsCount = useAppSelector(getProductsCount)
-    const { pathname } = useRouter()
+    const { pathname, push } = useRouter()
     const { t } = useTranslation(['common'])
 
     const [menuOpen, setMenuOpen] = useState(false)
@@ -63,7 +63,7 @@ export default function Navbar() {
                     <Links className="space-x-8  pointer-events-auto" />
                 </nav>
 
-                <Button className="hidden md:flex">
+                <Button className="hidden md:flex" onClick={() => push('/cart')}>
                     {productsCount > 0 && <Badge>{productsCount}</Badge>}
                     <div>{t('Card')}</div>
                     <ShopIcon />

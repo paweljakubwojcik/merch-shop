@@ -1,0 +1,7 @@
+{
+    "product": "Product",
+    "availability": "Availability",
+    "price": "Price",
+    "quantity": "Quantity",
+    "sum": "Sum"
+}
