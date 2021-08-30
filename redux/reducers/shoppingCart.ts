@@ -3,7 +3,7 @@ import { RootState } from '../store'
 
 // Define a type for the slice state
 
-interface Product extends Pick<ProductData, 'name' | 'price' | 'images' | 'id'> {
+export interface Product extends Pick<ProductData, 'name' | 'price' | 'images' | 'id'> {
     quantity: number
 }
 

@@ -12,3 +12,18 @@
     opacity: 0;
     transition: opacity 300ms;
 }
+
+.shift-right-enter {
+    transform: translateX(200%);
+}
+.shift-right-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms;
+}
+.shift-right-exit {
+    transform: translateX(0);
+}
+.shift-right-exit-active {
+    transform: translateX(200%);
+    transition: transform 300ms;
+}
