@@ -7,7 +7,7 @@ export interface Product extends Pick<ProductData, 'name' | 'price' | 'images' |
     quantity: number
 }
 
-interface ShoppingCartState {
+export interface ShoppingCartState {
     products: Array<Product>
 }
 

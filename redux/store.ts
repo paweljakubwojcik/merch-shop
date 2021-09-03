@@ -1,18 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { getStateFormLocalStorage, saveStateToLocalStorage } from './middleware/localStorage'
-import shoppingCartReducer from './reducers/shoppingCart'
+import shoppingCartReducer, { ShoppingCartState } from './reducers/shoppingCart'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import { PersistConfig } from 'redux-persist/lib/types'
 
-const LOCAL_STORAGE_KEY = `TRUTUTU-state`
+const persistReducerConfig: PersistConfig<ShoppingCartState> = {
+    key: 'cart',
+    storage,
+}
 
 const store = configureStore({
     reducer: {
-        shoppingCart: shoppingCartReducer,
+        shoppingCart: persistReducer(persistReducerConfig, shoppingCartReducer),
     },
-    preloadedState: getStateFormLocalStorage(LOCAL_STORAGE_KEY),
-})
-
-store.subscribe(() => {
-    saveStateToLocalStorage(LOCAL_STORAGE_KEY, store.getState())
 })
 
 export type RootState = ReturnType<typeof store.getState>

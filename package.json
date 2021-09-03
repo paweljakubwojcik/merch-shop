@@ -23,7 +23,8 @@
     "react-feather": "^2.0.9",
     "react-i18next": "^11.11.4",
     "react-redux": "^7.2.4",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.2",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/feather-icons": "^4.7.0",
