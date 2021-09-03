@@ -5,6 +5,7 @@ import { useAppSelector } from '../redux/hooks'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useRef } from 'react'
 import { Product } from '../redux/reducers/shoppingCart'
+import getNewId from '../utils/getNewId'
 
 type Change = {
     id: number
@@ -76,7 +77,7 @@ const getChange: (diffrence: Diff<Product>) => Change = (diffrence) => {
 
     return {
         product: diffrence.payload,
-        id: 1,
+        id: getNewId(),
         message,
     }
 }
@@ -88,26 +89,22 @@ export default function CartChangeListener() {
     const [changes, setChanges] = useState<Array<Change>>([])
 
     useEffect(() => {
-        /* getting the change */
 
         const diffrence = getArrayDiffrence(productsSnapshot.current, products, 'id')
-        console.log(diffrence)
-
         productsSnapshot.current = products
+        if (!diffrence.payload) return
 
         const newChange = getChange(diffrence)
 
         setChanges((prev) => [newChange, ...prev])
-        /* setTimeout(() => setVisible(false), 3000) */
+        setTimeout(() => setChanges((prev) => prev.filter((c) => c.id !== newChange.id)), 3000)
     }, [products])
 
-    useEffect(() => {}, [])
-
     return (
-        <div className={'fixed bottom-4 right-4 flex flex-col'}>
+        <div className={'fixed bottom-0 right-0 p-4 flex flex-col max-w-full'}>
             <TransitionGroup>
-                {changes.map((change, i) => (
-                    <CSSTransition classNames={'shift-right'} timeout={300} key={i}>
+                {changes.map((change) => (
+                    <CSSTransition classNames={'shift-right'} timeout={300} key={change.id}>
                         <ChangeAnnouncer>{change.message}</ChangeAnnouncer>
                     </CSSTransition>
                 ))}
@@ -117,5 +114,5 @@ export default function CartChangeListener() {
 }
 
 const ChangeAnnouncer = ({ children }: ComponentPropsWithoutRef<'div'>) => (
-    <div className={' bg-white p-6 shadow-lg'}>{children}</div>
+    <div className={' bg-white p-6 shadow-lg m-2 max-w-md text-sm'}>{children}</div>
 )

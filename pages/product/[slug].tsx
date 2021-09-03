@@ -62,6 +62,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
     } = product
 
     const { t } = useTranslation(['product', 'common'])
+    const dispatch = useAppDispatch()
 
     const linksAggregated = [
         ...categories.map((c) => ({
@@ -75,8 +76,6 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
             id: c.id,
         })),
     ]
-
-    const dispatch = useAppDispatch()
 
     const handleAddToCard = () =>
         dispatch(

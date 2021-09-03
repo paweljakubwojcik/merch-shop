@@ -7,12 +7,69 @@ import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { addProduct, removeProduct } from '../redux/reducers/shoppingCart'
 import { useTranslation } from 'react-i18next'
+import useBreakpoint from '../hooks/useBreakpoints'
+import useWindowSize from '../hooks/useWindowSize'
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
     props: { ...(await serverSideTranslations(locale, ['common', 'cart'])) },
 })
 
 const CartPage: NextPageWithLayout = () => {
+    const { breakpoints } = useBreakpoint()
+    const { width } = useWindowSize()
+
+    const isMobile = width < breakpoints.lg
+
+    return isMobile ? <MobileView /> : <DesktopLayout />
+}
+
+const MobileView = () => {
+    const products = useAppSelector((state) => state.shoppingCart.products)
+    const dispatch = useAppDispatch()
+
+    return (
+        <div className="flex flex-col items-center w-full p-4">
+            {products.map((product) => (
+                <div className="flex flex-col border-black border-2 m-4 w-full" key={product.id}>
+                    <Cell>
+                        <div className={'m-2 w-3/4 max-w-xs'}>
+                            <Image
+                                src={product.images[0].url}
+                                alt={product.name}
+                                layout={'responsive'}
+                                objectFit="cover"
+                                width={100}
+                                height={100}
+                            />
+                        </div>
+
+                        <div>{product.name}</div>
+                    </Cell>
+                    <Cell>{'w magazynie'}</Cell>
+                    <div className="flex">
+                        <Cell>
+                            <div>{product.price} PLN</div>
+                        </Cell>
+                        <Cell>
+                            <QuantitySelector
+                                value={product.quantity}
+                                increment={() => {
+                                    dispatch(addProduct(product))
+                                }}
+                                decrement={() => {
+                                    dispatch(removeProduct(product))
+                                }}
+                            />
+                        </Cell>
+                        <Cell>{product.price * product.quantity} PLN</Cell>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+const DesktopLayout = () => {
     const products = useAppSelector((state) => state.shoppingCart.products)
     const dispatch = useAppDispatch()
 
@@ -36,7 +93,9 @@ const CartPage: NextPageWithLayout = () => {
                             <div>{product.name}</div>
                         </Cell>
                         <Cell>{'w magazynie'}</Cell>
-                        <Cell>{product.price} PLN</Cell>
+                        <Cell>
+                            <div>{product.price} PLN</div>
+                        </Cell>
                         <Cell>
                             <QuantitySelector
                                 value={product.quantity}

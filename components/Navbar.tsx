@@ -76,7 +76,10 @@ export default function Navbar() {
                     <MobileMenu className="md:hidden" />
                 </CSSTransition>
             </div>
-            <FloatingButton className="md:hidden fixed border-none bottom-10 right-8 z-30">
+            <FloatingButton
+                className="md:hidden fixed border-none bottom-10 right-8 z-30"
+                onClick={() => push('/cart')}
+            >
                 {productsCount > 0 && (
                     <Badge className="-translate-x-1/4 -translate-y-1/4 ">{productsCount}</Badge>
                 )}
