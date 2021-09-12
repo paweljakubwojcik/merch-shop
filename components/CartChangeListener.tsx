@@ -67,13 +67,13 @@ const getArrayDiffrence: (
 const getChange: (diffrence: Diff<Product>) => Change = (diffrence) => {
     const productName = diffrence.payload?.name
 
-    const message = `${productName} was ${
+    const message = `Product "${productName}" has been ${
         diffrence.action === 'ADDED'
             ? 'added to'
             : diffrence.action === 'REMOVED'
             ? 'removed from'
             : ''
-    } cart`
+    } the cart`
 
     return {
         product: diffrence.payload,
@@ -89,7 +89,6 @@ export default function CartChangeListener() {
     const [changes, setChanges] = useState<Array<Change>>([])
 
     useEffect(() => {
-
         const diffrence = getArrayDiffrence(productsSnapshot.current, products, 'id')
         productsSnapshot.current = products
         if (!diffrence.payload) return

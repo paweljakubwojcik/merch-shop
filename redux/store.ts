@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import shoppingCartReducer, { ShoppingCartState } from './reducers/shoppingCart'
-import { persistReducer, persistStore } from 'redux-persist'
+import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { PersistConfig } from 'redux-persist/lib/types'
 

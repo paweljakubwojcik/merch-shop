@@ -9,6 +9,7 @@ import { addProduct, removeProduct } from '../redux/reducers/shoppingCart'
 import { useTranslation } from 'react-i18next'
 import useBreakpoint from '../hooks/useBreakpoints'
 import useWindowSize from '../hooks/useWindowSize'
+import sanitazeNumber from '../utils/sanitazeNumber'
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
     props: { ...(await serverSideTranslations(locale, ['common', 'cart'])) },
@@ -30,7 +31,7 @@ const MobileView = () => {
     return (
         <div className="flex flex-col items-center w-full p-4">
             {products.map((product) => (
-                <div className="flex flex-col border-black border-2 m-4 w-full" key={product.id}>
+                <div className="flex flex-col border-black border-1 m-4 w-full" key={product.id}>
                     <Cell>
                         <div className={'m-2 w-3/4 max-w-xs'}>
                             <Image
@@ -61,7 +62,7 @@ const MobileView = () => {
                                 }}
                             />
                         </Cell>
-                        <Cell>{product.price * product.quantity} PLN</Cell>
+                        <Cell>{sanitazeNumber(product.price * product.quantity, 2)} PLN</Cell>
                     </div>
                 </div>
             ))}
@@ -107,7 +108,7 @@ const DesktopLayout = () => {
                                 }}
                             />
                         </Cell>
-                        <Cell>{product.price * product.quantity} PLN</Cell>
+                        <Cell>{sanitazeNumber(product.price * product.quantity, 2)} PLN</Cell>
                     </React.Fragment>
                 ))}
             </div>
