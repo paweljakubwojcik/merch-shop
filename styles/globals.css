@@ -9,6 +9,9 @@
 
         font-weight: bold;
     }
+    .z-negative {
+        z-index: -1;
+    }
 }
 
 html,

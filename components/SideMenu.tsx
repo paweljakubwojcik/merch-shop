@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import Button from './Button'
+import { useEffect, useState } from 'react'
+import { X as XIcon } from 'react-feather'
+import Link from 'next/link'
+import { useRouter } from 'next/dist/client/router'
 
 type SideMenuProps = {
     collections: Array<Collection>
@@ -7,24 +9,34 @@ type SideMenuProps = {
 }
 
 const SideMenu = ({ collections, categories }: SideMenuProps) => {
+    const { pathname } = useRouter()
     const [open, setOpen] = useState(false)
+    useEffect(() => {
+        setOpen(false)
+    }, [pathname])
 
     return (
         <aside
             className={`fixed z-20 left-0 text-sm flex-shrink-0 p-8 block bg-white transform ${
                 open ? 'translate-x-0' : '-translate-x-full'
-            } transition-transform h-full 
-                md:sticky md:translate-x-0 md:top-20 
+            } transition-transform h-full shadow-lg
+                md:sticky md:translate-x-0 md:top-20 md:shadow-none
             `}
         >
-            <Button
-                className={`absolute left-full top-0 transform ${
-                    open ? '-translate-x-full' : 'translate-x-0'
-                } transition-transform md:hidden`}
-                onClick={() => setOpen((v) => !v)}
+            <button
+                className={`absolute right-0 top-0 transform transition-transform p-2 md:hidden`}
+                onClick={() => setOpen(false)}
             >
-                Open
-            </Button>
+                <XIcon size={28} />
+            </button>
+            <button
+                onClick={() => setOpen(true)}
+                className={`absolute right-0 top-1/2 transform transition-transform 
+                 md:hidden text-xs bg-white rotate-90 origin-bottom-right p-1 z-negative
+                 ${open ? 'opacity-0' : ''}`}
+            >
+                side menu
+            </button>
             <SectionDiv>
                 <h3 className="font-bold">Collections</h3>
                 <ul>
@@ -51,6 +63,10 @@ type ListElementProps = {
     data: Collection | Category
 }
 
-const ListElement = ({ data }: ListElementProps) => <li className="my-4 ml-2">{data.name}</li>
+const ListElement = ({ data }: ListElementProps) => (
+    <li className="my-4 ml-2">
+        <Link href={data.slug}>{data.name}</Link>
+    </li>
+)
 
 export default SideMenu
