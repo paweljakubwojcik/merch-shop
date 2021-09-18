@@ -9,6 +9,7 @@ import { useTranslation } from 'next-i18next'
 import { useAppSelector } from '../redux/hooks'
 import Badge from './Badge'
 import { getProductsCount } from '../redux/reducers/shoppingCart'
+import HoverGroup from './HoverGroup'
 
 const routes = [
     {
@@ -99,29 +100,18 @@ const MobileMenu = ({ className }: ComponentPropsWithoutRef<'div'>) => {
     )
 }
 
-const Links = ({ className }: ComponentPropsWithoutRef<'div'>) => {
-    const [hovered, setHovered] = useState<string>()
-    const [focused, setFocused] = useState<string>()
+const Links = ({ ...props }: ComponentPropsWithoutRef<'div'>) => {
     const { t } = useTranslation(['common'])
 
     return (
-        <ul className={`flex group ${className}`}>
-            {routes.map(({ to, name }) => (
-                <li
-                    key={name}
-                    className={`transition-opacity ${(hovered || focused) && 'opacity-50'} ${
-                        (hovered === name || focused === name) && 'opacity-100'
-                    } `}
-                    onMouseEnter={() => setHovered(name)}
-                    onFocusCapture={() => setFocused(name)}
-                    onMouseLeave={() => setHovered('')}
-                    onBlurCapture={() => setFocused('')}
-                >
-                    <Link href={to}>
-                        <a>{t(name)}</a>
-                    </Link>
-                </li>
-            ))}
-        </ul>
+        <HoverGroup
+            data={routes}
+            renderItem={({ to, name }) => (
+                <Link href={to}>
+                    <a>{t(name)}</a>
+                </Link>
+            )}
+            {...props}
+        />
     )
 }

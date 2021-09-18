@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { X as XIcon } from 'react-feather'
 import Link from 'next/link'
 import { useRouter } from 'next/dist/client/router'
+import HoverGroup from './HoverGroup'
 
 type SideMenuProps = {
     collections: Array<Collection>
@@ -39,34 +40,26 @@ const SideMenu = ({ collections, categories }: SideMenuProps) => {
             </button>
             <SectionDiv>
                 <h3 className="font-bold">Collections</h3>
-                <ul>
-                    {collections.map((collection) => (
-                        <ListElement data={collection} key={collection.id} />
-                    ))}
-                </ul>
+                <HoverGroup
+                    data={collections}
+                    renderItem={({ slug, name }) => <Link href={slug}>{name}</Link>}
+                    className={'flex-col'}
+                    itemClassNames={'my-4 ml-2'}
+                />
             </SectionDiv>
             <SectionDiv>
                 <h3 className="font-bold">Categories</h3>
-                <ul>
-                    {categories.map((category) => (
-                        <ListElement data={category} key={category.id} />
-                    ))}
-                </ul>
+                <HoverGroup
+                    data={categories}
+                    renderItem={({ slug, name }) => <Link href={slug}>{name}</Link>}
+                    className={'flex-col'}
+                    itemClassNames={'my-4 ml-2'}
+                />
             </SectionDiv>
         </aside>
     )
 }
 
 const SectionDiv: React.FC = ({ children }) => <section className="my-8">{children}</section>
-
-type ListElementProps = {
-    data: Collection | Category
-}
-
-const ListElement = ({ data }: ListElementProps) => (
-    <li className="my-4 ml-2">
-        <Link href={data.slug}>{data.name}</Link>
-    </li>
-)
 
 export default SideMenu

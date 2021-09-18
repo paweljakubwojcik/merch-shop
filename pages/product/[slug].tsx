@@ -11,6 +11,7 @@ import Link from 'next/link'
 
 import { useAppDispatch } from '../../redux/hooks'
 import { addProduct } from '../../redux/reducers/shoppingCart'
+import HoverGroup from 'components/HoverGroup'
 
 export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
     params,
@@ -91,19 +92,18 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
     return (
         <article className="flex flex-col items-center justify-items-center md:grid grid-cols-2 grid-rows-2 grid-flow-col-dense w-full px-4 ">
             <div className="flex justify-center items-center flex-col space-y-4 text-sm col-start-2 py-20 max-w-lg">
-                <div className="flex flex-wrap justify-center space-x-4 text-xs text-gray-600">
-                    {linksAggregated.map((c, i) => (
-                        <React.Fragment key={i}>
-                            {i !== 0 && (
-                                <div className="block bg-current w-1 h-1 rounded-full my-auto"></div>
-                            )}
-                            <div className="">
-                                <Link href={c.link}>
-                                    <a>{c.name}</a>
-                                </Link>
-                            </div>
-                        </React.Fragment>
-                    ))}
+                <div className="flex flex-wrap justify-center space-x-4 text-xs text-gray-600 ">
+                    <HoverGroup
+                        className={'grid grid-flow-col auto-cols-fr justify-items-center'}
+                        data={linksAggregated}
+                        renderItem={({ link, name }, i) => (
+                            <Link href={link}>
+                                <a className='flex whitespace-nowrap'>{name}</a>
+                            </Link>
+                        )}
+                        itemClassNames={'mx-2'}
+                        Separator={<div className='w-1'>|</div>}
+                    />
                 </div>
                 <header>
                     <h2 className="font-bold text-xl">{name}</h2>
