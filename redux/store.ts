@@ -1,21 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit'
-import shoppingCartReducer, { ShoppingCartState } from './reducers/shoppingCart'
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-import { PersistConfig } from 'redux-persist/lib/types'
-
-const persistReducerConfig: PersistConfig<ShoppingCartState> = {
-    key: 'cart',
-    storage,
-}
+import shoppingCartReducer from './reducers/shoppingCart'
+import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync'
 
 const store = configureStore({
     reducer: {
-        shoppingCart: persistReducer(persistReducerConfig, shoppingCartReducer),
+        shoppingCart: shoppingCartReducer,
     },
+    middleware: [
+        createStateSyncMiddleware({ blacklist: ['persist/PERSIST', 'persist/REHYDRATE'] }),
+    ],
 })
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+initMessageListener(store)
 
 export default store

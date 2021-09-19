@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
+import storage from 'redux-persist/lib/storage'
+import { PersistConfig } from 'redux-persist/lib/types'
+import { persistReducer } from 'redux-persist'
 
 // Define a type for the slice state
 
@@ -50,4 +53,9 @@ export const { addProduct, removeProduct, clearShoppingCart } = actions
 export const getProductsCount = (state: RootState) =>
     state.shoppingCart.products.reduce((c, p) => c + p.quantity, 0)
 
-export default reducer
+const persistReducerConfig: PersistConfig<ShoppingCartState> = {
+    key: 'cart',
+    storage,
+}
+
+export default persistReducer(persistReducerConfig, reducer)
