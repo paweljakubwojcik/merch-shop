@@ -46,7 +46,7 @@ export default function Navbar() {
     useEffect(() => {
         setMenuOpen(false)
     }, [pathname])
-
+    const isOnCartPage = pathname === '/cart'
     return (
         <>
             <div
@@ -64,11 +64,13 @@ export default function Navbar() {
                     <Links className="space-x-8  pointer-events-auto" />
                 </nav>
 
-                <Button className="hidden md:flex" onClick={() => push('/cart')}>
-                    {productsCount > 0 && <Badge>{productsCount}</Badge>}
-                    <div>{t('Card')}</div>
-                    <ShopIcon />
-                </Button>
+                {!isOnCartPage && (
+                    <Button className="hidden md:flex" onClick={() => push('/cart')}>
+                        {productsCount > 0 && <Badge>{productsCount}</Badge>}
+                        <div>{t('Card')}</div>
+                        <ShopIcon />
+                    </Button>
+                )}
 
                 <button className="md:hidden relative z-50" onClick={() => setMenuOpen((v) => !v)}>
                     {menuOpen ? <XIcon size={28} /> : <MenuIcon size={28} />}
@@ -77,15 +79,19 @@ export default function Navbar() {
                     <MobileMenu className="md:hidden" />
                 </CSSTransition>
             </div>
-            <FloatingButton
-                className="md:hidden fixed border-none bottom-10 right-8 z-30"
-                onClick={() => push('/cart')}
-            >
-                {productsCount > 0 && (
-                    <Badge className="-translate-x-1/4 -translate-y-1/4 ">{productsCount}</Badge>
-                )}
-                <ShopIcon />
-            </FloatingButton>
+            {!isOnCartPage && (
+                <FloatingButton
+                    className="md:hidden fixed border-none bottom-10 right-8 z-30"
+                    onClick={() => push('/cart')}
+                >
+                    {productsCount > 0 && (
+                        <Badge className="-translate-x-1/4 -translate-y-1/4 ">
+                            {productsCount}
+                        </Badge>
+                    )}
+                    <ShopIcon />
+                </FloatingButton>
+            )}
         </>
     )
 }

@@ -18,31 +18,40 @@ export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
     locale = 'en',
 }) => {
     const slug = (params?.slug as string) || ''
+    try {
+        const { product } = await getProductBySlug({ locale, slug })
 
-    const { product } = await getProductBySlug({ locale, slug })
-
-    return {
-        props: { product, ...(await serverSideTranslations(locale, ['common', 'product'])) },
+        return {
+            props: { product, ...(await serverSideTranslations(locale, ['common', 'product'])) },
+        }
+    } catch (error) {
+        console.error(error)
+        return {
+            notFound: true,
+        }
     }
 }
 
 export const getStaticPaths: GetStaticPaths = async ({ locales = [] }) => {
     let paths: GetStaticPathsResult['paths'] = []
-
-    for (const locale of locales) {
-        const { slugs } = await getProductsSlugs({ locale })
-        paths = [
-            ...paths,
-            ...slugs.map((slug) => ({
-                params: { slug },
-                locale,
-            })),
-        ]
+    try {
+        for (const locale of locales) {
+            const { slugs } = await getProductsSlugs({ locale })
+            paths = [
+                ...paths,
+                ...slugs.map((slug) => ({
+                    params: { slug },
+                    locale,
+                })),
+            ]
+        }
+    } catch (e) {
+        console.error(e)
     }
 
     return {
         paths,
-        fallback: false,
+        fallback: true,
     }
 }
 

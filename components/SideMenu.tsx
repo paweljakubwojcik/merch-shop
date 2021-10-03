@@ -17,14 +17,14 @@ const SideMenu = ({ categories }: SideMenuProps) => {
 
     return (
         <aside
-            className={`fixed z-20 left-0 text-sm flex-shrink-0 p-8 block bg-white transform ${
+            className={`fixed z-30 top-0 left-0 text-sm flex-shrink-0 p-8 block bg-white transform ${
                 open ? 'translate-x-0' : '-translate-x-full'
             } transition-transform h-full shadow-lg
-                md:sticky md:translate-x-0 md:top-20 md:shadow-none
+                md:sticky md:translate-x-0 md:top-20 md:shadow-none md:z-20
             `}
         >
             <button
-                className={`absolute right-0 top-0 transform transition-transform p-2 md:hidden`}
+                className={`absolute right-2 top-2 transform transition-transform p-2 md:hidden`}
                 onClick={() => setOpen(false)}
             >
                 <XIcon size={28} />
@@ -44,7 +44,9 @@ const SideMenu = ({ categories }: SideMenuProps) => {
                     </h3>
                     <HoverGroup
                         data={categories}
-                        renderItem={({ name, categoryGroup, slug }) => <Link href={`/shop/${categoryGroup.slug}/${slug}`}>{name}</Link>}
+                        renderItem={({ name, categoryGroup, slug }) => (
+                            <Link href={`/shop/${categoryGroup.slug}/${slug}`}>{name}</Link>
+                        )}
                         className={'flex-col'}
                         itemClassNames={'my-4 ml-2'}
                     />

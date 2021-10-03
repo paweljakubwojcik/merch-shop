@@ -11,7 +11,7 @@ export default function ProductCard({
     ...props
 }: ProductCardProps) {
     return (
-        <div {...props}>
+        <div {...props} className="max-w-md">
             <Link href={`/product/${slug}`}>
                 <a className="relative group cursor-pointer  block">
                     <div className="absolute w-full h-full">
