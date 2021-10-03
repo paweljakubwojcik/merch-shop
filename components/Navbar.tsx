@@ -51,7 +51,7 @@ export default function Navbar() {
         <>
             <div
                 className={`flex items-center justify-between px-4 md:px-8 shadow-md mx-2 text-sm sticky z-30 top-0 bg-white ${
-                    scrolled ? 'h-16' : 'h-24'
+                    scrolled ? 'h-16 mb-8' : 'h-24 mb-0'
                 } transition-all`}
             >
                 <h1 className="font-bold text-2xl">
