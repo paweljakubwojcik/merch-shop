@@ -40,7 +40,7 @@ const SideMenu = ({ categories }: SideMenuProps) => {
             {categories.map(({ id, slug, name, categories }) => (
                 <SectionDiv key={id}>
                     <h3 className="font-bold">
-                        <Link href={slug}>{name}</Link>
+                        <Link href={`/shop/${slug}`}>{name}</Link>
                     </h3>
                     <HoverGroup
                         data={categories}
