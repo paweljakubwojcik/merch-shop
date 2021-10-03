@@ -19,10 +19,7 @@ export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
 }) => {
     const slug = (params?.slug as string) || ''
 
-    let product: ProductData
-    // case - product wasnt prerendered but locale match the slug
-    const data = await getProductBySlug({ locale, slug })
-    product = data.product
+    const { product } = await getProductBySlug({ locale, slug })
 
     return {
         props: { product, ...(await serverSideTranslations(locale, ['common', 'product'])) },
@@ -58,25 +55,11 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
         description,
         price,
         categories,
-        collections,
         id,
     } = product
 
     const { t } = useTranslation(['product', 'common'])
     const dispatch = useAppDispatch()
-
-    const linksAggregated = [
-        ...categories.map((c) => ({
-            name: c.name,
-            link: `/category/${c.slug}`,
-            id: c.id,
-        })),
-        ...collections.map((c) => ({
-            name: c.name,
-            link: `/collection/${c.slug}`,
-            id: c.id,
-        })),
-    ]
 
     const handleAddToCard = () =>
         dispatch(
@@ -95,14 +78,14 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
                 <div className="flex flex-wrap justify-center space-x-4 text-xs text-gray-600 ">
                     <HoverGroup
                         className={'grid grid-flow-col auto-cols-fr justify-items-center'}
-                        data={linksAggregated}
-                        renderItem={({ link, name }, i) => (
-                            <Link href={link}>
-                                <a className='flex whitespace-nowrap'>{name}</a>
+                        data={categories}
+                        renderItem={({ slug, categoryGroup, name }, i) => (
+                            <Link href={`/shop/${categoryGroup.slug}/${slug}`}>
+                                <a className="flex whitespace-nowrap">{name}</a>
                             </Link>
                         )}
                         itemClassNames={'mx-2'}
-                        Separator={<div className='w-1'>|</div>}
+                        Separator={<div className="w-1">|</div>}
                     />
                 </div>
                 <header>

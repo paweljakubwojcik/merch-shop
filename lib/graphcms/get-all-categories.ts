@@ -1,25 +1,29 @@
 import graphcmsClient, { gql } from './graphcms-client'
-import { CATEGORY_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '../../graphql/fragments'
+import { CATEGORY_FRAGMENT } from '../../graphql/fragments'
 
 export const getAllCategoriesQuery = gql`
     query AllCategories($locale: Locale!) {
-        categories(locales: [$locale]) {
-            ...CategoryFragment
+        categoryGroups(locales: [$locale]) {
+            id
+            name
+            slug
+            categories {
+                ...CategoryFragment
+            }
         }
     }
     ${CATEGORY_FRAGMENT}
 `
 
 async function getAllCategories({ locale = 'en' }) {
-    const { categories } = await graphcmsClient.request<{ categories: Array<Collection> }>(
-        getAllCategoriesQuery,
-        {
-            locale,
-        }
-    )
+    const { categoryGroups } = await graphcmsClient.request<{
+        categoryGroups: Array<CategoryGroup>
+    }>(getAllCategoriesQuery, {
+        locale,
+    })
 
     return {
-        categories,
+        categoryGroups,
     }
 }
 

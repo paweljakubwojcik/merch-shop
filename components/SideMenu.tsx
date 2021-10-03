@@ -5,11 +5,10 @@ import { useRouter } from 'next/dist/client/router'
 import HoverGroup from './HoverGroup'
 
 type SideMenuProps = {
-    collections: Array<Collection>
-    categories: Array<Category>
+    categories: Array<CategoryGroup>
 }
 
-const SideMenu = ({ collections, categories }: SideMenuProps) => {
+const SideMenu = ({ categories }: SideMenuProps) => {
     const { pathname } = useRouter()
     const [open, setOpen] = useState(false)
     useEffect(() => {
@@ -38,24 +37,19 @@ const SideMenu = ({ collections, categories }: SideMenuProps) => {
             >
                 side menu
             </button>
-            <SectionDiv>
-                <h3 className="font-bold">Collections</h3>
-                <HoverGroup
-                    data={collections}
-                    renderItem={({ slug, name }) => <Link href={slug}>{name}</Link>}
-                    className={'flex-col'}
-                    itemClassNames={'my-4 ml-2'}
-                />
-            </SectionDiv>
-            <SectionDiv>
-                <h3 className="font-bold">Categories</h3>
-                <HoverGroup
-                    data={categories}
-                    renderItem={({ slug, name }) => <Link href={slug}>{name}</Link>}
-                    className={'flex-col'}
-                    itemClassNames={'my-4 ml-2'}
-                />
-            </SectionDiv>
+            {categories.map(({ id, slug, name, categories }) => (
+                <SectionDiv key={id}>
+                    <h3 className="font-bold">
+                        <Link href={slug}>{name}</Link>
+                    </h3>
+                    <HoverGroup
+                        data={categories}
+                        renderItem={({ name, categoryGroup, slug }) => <Link href={`/shop/${categoryGroup.slug}/${slug}`}>{name}</Link>}
+                        className={'flex-col'}
+                        itemClassNames={'my-4 ml-2'}
+                    />
+                </SectionDiv>
+            ))}
         </aside>
     )
 }

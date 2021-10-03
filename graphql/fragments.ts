@@ -11,11 +11,9 @@ export const PRODUCT_CARD_FRAGMENT = gql`
             id
             name
             slug
-        }
-        collections {
-            id
-            name
-            slug
+            categoryGroup {
+                slug
+            }
         }
         description
         name
@@ -30,13 +28,10 @@ export const CATEGORY_FRAGMENT = gql`
         id
         name
         slug
+        categoryGroup {
+            slug
+        }
+        description
     }
 `
 
-export const COLLECTION_FRAGMENT = gql`
-    fragment CollectionFragment on Collection {
-        id
-        name
-        slug
-    }
-`

@@ -9,12 +9,6 @@ export const getCategoryQuery = gql`
                 ...ProductCardFragment
             }
         }
-        collections(where: { slug: $slug }, locales: [$locale]) {
-            name
-            products {
-                ...ProductCardFragment
-            }
-        }
     }
     ${PRODUCT_CARD_FRAGMENT}
 `
@@ -24,13 +18,12 @@ type CategoryResult = { [key: string]: { products: Array<ProductData>; name: str
 async function getCategory({ locale = 'en', slug = '' }) {
     const {
         categories: [category],
-        collections: [collection],
     } = await graphcmsClient.request<CategoryResult>(getCategoryQuery, {
         locale,
         slug,
     })
 
-    return category || collection
+    return category
 }
 
 export default getCategory

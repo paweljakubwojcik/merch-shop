@@ -11,19 +11,26 @@ declare global {
         Component: NextPageWithLayout
     }
 
+    type CategoryGroup = {
+        id: string
+        name: string
+        slug: string
+        categories: Array<Category>
+    }
+
     type Category = {
         id: string
         name: string
         slug: string
+        categoryGroup: {
+            slug: string
+        }
     }
-
-    type Collection = Category
     interface ProductData {
         id: string
         images: Array<{ placeholderUrl: string; id: string; url: string }>
         name: string
         categories: Array<Category>
-        collections: Array<Category>
         description: string
         name: string
         price: number
