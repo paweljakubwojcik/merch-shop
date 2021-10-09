@@ -16,7 +16,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
 })
 
 const CartPage: NextPageWithLayout = () => {
-    const { breakpoints } = useBreakpoint()
+    const breakpoints = useBreakpoint()
     const { width } = useWindowSize()
 
     const isMobile = width < breakpoints.lg

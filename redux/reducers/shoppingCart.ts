@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import storage from 'redux-persist/lib/storage'
+import storage from '../utils/ssr-redux-persist-storage'
 import { PersistConfig } from 'redux-persist/lib/types'
 import { persistReducer } from 'redux-persist'
 
@@ -20,7 +20,7 @@ const initialState: ShoppingCartState = {
 }
 
 const { actions, reducer } = createSlice({
-    name: 'shoppinCart',
+    name: 'shoppingCart',
     initialState,
     reducers: {
         addProduct: (state, action: PayloadAction<Product>) => {

@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return (
         <ReduxProvider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                {getLayout(<Component {...pageProps} />)}{' '}
+                {getLayout(<Component {...pageProps} />)}
             </PersistGate>
         </ReduxProvider>
     )

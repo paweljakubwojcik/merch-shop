@@ -13,5 +13,5 @@ export default function useBreakpoints() {
     const breakpoints = Object.fromEntries(
         Object.entries(screens!).map(([key, value]) => [key, parseInt(value.replace('px', ''))])
     )
-    return { breakpoints: breakpoints as Breakpoints }
+    return breakpoints as Breakpoints
 }

@@ -2,12 +2,9 @@ import { GetStaticPaths, GetStaticPathsResult, GetStaticProps, InferGetStaticPro
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ReactElement } from 'react'
 import Layout from 'components/Layout'
-import ProductCard from 'components/ProductCard'
 import ProductGrid from 'components/ProductGrid'
 import SideMenu from 'components/SideMenu'
 import getAllCategories from 'lib/graphcms/get-all-categories'
-import getCategory from 'lib/graphcms/get-category'
-import getAllProducts from 'lib/graphcms/get-all-products'
 import getCategoryGroup from 'lib/graphcms/get-category-group'
 
 export const getStaticProps: GetStaticProps<{
