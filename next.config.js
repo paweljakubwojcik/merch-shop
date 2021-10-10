@@ -2,29 +2,50 @@ const { i18n } = require('./next-i18next.config')
 
 const localizedRoutesPL = require('./public/locales/PL/routes.json')
 
-const rewrites = Object.entries(localizedRoutesPL).map(([eng, pl]) => ({
-    source: `/PL/${pl}/:slug*`,
-    destination: `/PL/${eng}/:slug*`,
-    locale: false,
-}))
+const defaultLocale = i18n.defaultLocale
 
-const redirects = Object.entries(localizedRoutesPL).reduce((acc, [eng, pl]) => {
-    return [
-        ...acc,
-        {
-            source: `/PL/${eng}/:param*`,
-            destination: `/PL/${pl}/:param*`,
+const localizedRoutesMap = [
+    {
+        locale: 'PL',
+        dictionary: localizedRoutesPL,
+    },
+]
+
+const rewrites = localizedRoutesMap.reduce(
+    (rewrites, { locale, dictionary }) => [
+        ...rewrites,
+        ...Object.entries(dictionary).map(([def, foreign]) => ({
+            source: `/${locale}/${foreign}/:slug*`,
+            destination: `/${locale}/${def}/:slug*`,
             locale: false,
-            permanent: true,
-        },
-        {
-            source: `/en/${pl}/:param*`,
-            destination: `/en/${eng}`,
-            permanent: true,
-            locale: false,
-        },
-    ]
-}, [])
+        })),
+    ],
+    []
+)
+
+const redirects = localizedRoutesMap.reduce(
+    (rewrites, { locale, dictionary }) => [
+        ...rewrites,
+        ...Object.entries(dictionary).reduce((acc, [def, foreign]) => {
+            return [
+                ...acc,
+                {
+                    source: `/${locale}/${def}/:param*`,
+                    destination: `/${locale}/${pl}/:param*`,
+                    locale: false,
+                    permanent: true,
+                },
+                {
+                    source: `/${defaultLocale}/${foreign}/:param*`,
+                    destination: `/${defaultLocale}/${def}`,
+                    permanent: true,
+                    locale: false,
+                },
+            ]
+        }, []),
+    ],
+    []
+)
 
 /** @type {import('next').NextConfig} */
 module.exports = {
