@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ComponentPropsWithoutRef } from 'react'
 import { useEffect } from 'react'
 import { useAppSelector } from '../redux/hooks'
@@ -6,6 +6,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useRef } from 'react'
 import { Product } from '../redux/reducers/shoppingCart'
 import getNewId from '../utils/getNewId'
+import { useTranslation } from 'react-i18next'
+import { X } from 'react-feather'
 
 type Change = {
     id: number
@@ -17,7 +19,7 @@ type ActionType = 'REMOVED' | 'ADDED' | 'MODYFIED'
 
 type Diff<T> = { payload: T; action: ActionType }
 
-const getArrayDiffrence: (
+const getArrayDifference: (
     array1: Array<Product>,
     array2: Array<Product>,
     key: keyof Product
@@ -64,47 +66,58 @@ const getArrayDiffrence: (
     return { payload, action }
 }
 
-const getChange: (diffrence: Diff<Product>) => Change = (diffrence) => {
-    const productName = diffrence.payload?.name
-
-    const message = `Product "${productName}" has been ${
-        diffrence.action === 'ADDED'
-            ? 'added to'
-            : diffrence.action === 'REMOVED'
-            ? 'removed from'
-            : ''
-    } the cart`
-
-    return {
-        product: diffrence.payload,
-        id: getNewId(),
-        message,
-    }
-}
-
 export default function CartChangeListener() {
+    const { t } = useTranslation(['cartChangeListener'])
     const products = useAppSelector((state) => state.shoppingCart.products)
     const productsSnapshot = useRef(products)
 
     const [changes, setChanges] = useState<Array<Change>>([])
 
-    useEffect(() => {
-        const diffrence = getArrayDiffrence(productsSnapshot.current, products, 'id')
-        productsSnapshot.current = products
-        if (!diffrence.payload) return
+    const getChange: (difference: Diff<Product>) => Change = useCallback(
+        (difference) => {
+            const productName = difference.payload?.name
 
-        const newChange = getChange(diffrence)
+            const message = `${t('Product')} "${productName}" ${
+                difference.action === 'ADDED'
+                    ? t('added message')
+                    : difference.action === 'REMOVED'
+                    ? t('removed message')
+                    : ''
+            } `
+
+            return {
+                product: difference.payload,
+                id: getNewId(),
+                message,
+            }
+        },
+        [t]
+    )
+
+    const removeChange = useCallback(
+        (id) => setChanges((prev) => prev.filter((c) => c.id !== id)),
+        []
+    )
+
+    useEffect(() => {
+        const difference = getArrayDifference(productsSnapshot.current, products, 'id')
+        productsSnapshot.current = products
+        if (!difference.payload) return
+
+        const newChange = getChange(difference)
 
         setChanges((prev) => [newChange, ...prev])
-        setTimeout(() => setChanges((prev) => prev.filter((c) => c.id !== newChange.id)), 3000)
-    }, [products])
+        setTimeout(() => removeChange(newChange.id), 3000)
+    }, [products, getChange, removeChange])
 
     return (
         <div className={'fixed bottom-0 right-0 p-4 flex flex-col max-w-full'}>
             <TransitionGroup>
                 {changes.map((change) => (
                     <CSSTransition classNames={'shift-right'} timeout={300} key={change.id}>
-                        <ChangeAnnouncer>{change.message}</ChangeAnnouncer>
+                        <ChangeAnnouncer dismiss={() => removeChange(change.id)}>
+                            {change.message}
+                        </ChangeAnnouncer>
                     </CSSTransition>
                 ))}
             </TransitionGroup>
@@ -112,6 +125,14 @@ export default function CartChangeListener() {
     )
 }
 
-const ChangeAnnouncer = ({ children }: ComponentPropsWithoutRef<'div'>) => (
-    <div className={' bg-white p-6 shadow-lg m-2 max-w-md text-sm'}>{children}</div>
+const ChangeAnnouncer = ({
+    children,
+    dismiss,
+}: ComponentPropsWithoutRef<'div'> & { dismiss: () => void }) => (
+    <div className={'flex bg-white p-6 shadow-lg m-2 max-w-md text-sm'}>
+        <button onClick={() => dismiss()}>
+            <X size={28} />
+        </button>
+        <div>{children}</div>
+    </div>
 )

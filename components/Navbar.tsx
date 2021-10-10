@@ -48,7 +48,7 @@ export default function Navbar() {
         setMenuOpen(false)
     }, [pathname])
 
-    const cartPath = `/${t('cart', { ns: 'routes' })}`
+    const cartPath = `/${t('cart')}`
     const isOnCartPage = pathname === cartPath
     return (
         <>
