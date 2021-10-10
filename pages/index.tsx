@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import Layout from '../components/Layout'
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
-    props: { ...(await serverSideTranslations(locale, ['common', 'homepage'])) },
+    props: { ...(await serverSideTranslations(locale)) },
 })
 
 const Home: NextPageWithLayout = () => {

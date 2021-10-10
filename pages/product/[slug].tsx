@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps<{ product: ProductData }> = async ({
         const { product } = await getProductBySlug({ locale, slug })
 
         return {
-            props: { product, ...(await serverSideTranslations(locale, ['common', 'product'])) },
+            props: { product, ...(await serverSideTranslations(locale)) },
         }
     } catch (error) {
         console.error(error)

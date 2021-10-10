@@ -3,12 +3,15 @@ import { X as XIcon } from 'react-feather'
 import Link from 'next/link'
 import { useRouter } from 'next/dist/client/router'
 import HoverGroup from './HoverGroup'
+import { useTranslation } from 'react-i18next'
 
 type SideMenuProps = {
     categories: Array<CategoryGroup>
 }
 
 const SideMenu = ({ categories }: SideMenuProps) => {
+    const { t } = useTranslation(['routes'])
+
     const { pathname } = useRouter()
     const [open, setOpen] = useState(false)
     useEffect(() => {
@@ -40,12 +43,12 @@ const SideMenu = ({ categories }: SideMenuProps) => {
             {categories.map(({ id, slug, name, categories }) => (
                 <SectionDiv key={id}>
                     <h3 className="font-bold">
-                        <Link href={`/shop/${slug}`}>{name}</Link>
+                        <Link href={`/${t('shop')}/${slug}`}>{name}</Link>
                     </h3>
                     <HoverGroup
                         data={categories}
                         renderItem={({ name, categoryGroup, slug }) => (
-                            <Link href={`/shop/${categoryGroup.slug}/${slug}`}>{name}</Link>
+                            <Link href={`/${t('shop')}/${categoryGroup.slug}/${slug}`}>{name}</Link>
                         )}
                         className={'flex-col'}
                         itemClassNames={'my-4 ml-2'}

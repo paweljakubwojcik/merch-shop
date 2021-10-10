@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps<{
             props: {
                 products,
                 categoryGroups,
-                ...(await serverSideTranslations(locale, ['common'])),
+                ...(await serverSideTranslations(locale)),
             },
         }
     } catch (e) {

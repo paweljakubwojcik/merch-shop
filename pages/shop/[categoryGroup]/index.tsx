@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<{
                 name,
                 categories,
                 categoryGroups,
-                ...(await serverSideTranslations(locale, ['common'])),
+                ...(await serverSideTranslations(locale)),
             },
         }
     } catch (e) {

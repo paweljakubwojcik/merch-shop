@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 
 type ProductCardProps = {
     product: ProductData
@@ -10,18 +11,21 @@ export default function ProductCard({
     product: { name, slug, images, price },
     ...props
 }: ProductCardProps) {
+    const { t } = useTranslation(['routes'])
     return (
         <div {...props} className="max-w-md">
-            <Link href={`/product/${slug}`}>
+            <Link href={`/${t('product')}/${slug}`}>
                 <a className="relative group cursor-pointer  block">
-                    <div className="absolute w-full h-full">
+                    <div className="absolute w-full h-full filter saturate-0">
                         <Image
-                            src={images[0].placeholderUrl}
+                            src={images[0].url}
+                            blurDataURL={images[0].placeholderUrl}
+                            placeholder={'blur'}
                             alt={name}
                             width={200}
                             height={300}
                             layout="responsive"
-                            className="filter blur-lg brightness-90 transform scale-125 "
+                            className="transform scale-150 "
                         />
                     </div>
                     <Image
@@ -32,7 +36,7 @@ export default function ProductCard({
                         width={200}
                         height={300}
                         layout="responsive"
-                        className="block transform group-hover:scale-75 transition-transform duration-200 delay-75 "
+                        className="block transform group-hover:opacity-0 transition-opacity duration-500 delay-75 "
                     />
                 </a>
             </Link>

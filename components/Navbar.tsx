@@ -1,4 +1,5 @@
 import React, { ComponentPropsWithoutRef, useEffect, useState } from 'react'
+import { i18n } from 'next-i18next'
 import Link from 'next/link'
 import { Menu as MenuIcon, X as XIcon, ShoppingCart as ShopIcon } from 'react-feather'
 import Button from './Button'
@@ -13,23 +14,23 @@ import HoverGroup from './HoverGroup'
 
 const routes = [
     {
-        to: '/about',
+        to: 'about',
         name: 'About',
     },
     {
-        to: '/shop',
+        to: 'shop',
         name: 'Shop',
     },
     {
-        to: '/contact',
+        to: 'contact',
         name: 'Contact',
     },
 ]
 
 export default function Navbar() {
     const productsCount = useAppSelector(getProductsCount)
-    const { pathname, push } = useRouter()
-    const { t } = useTranslation(['common'])
+    const { pathname, push, locale } = useRouter()
+    const { t } = useTranslation(['common', 'routes'])
 
     const [menuOpen, setMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
@@ -46,7 +47,9 @@ export default function Navbar() {
     useEffect(() => {
         setMenuOpen(false)
     }, [pathname])
-    const isOnCartPage = pathname === '/cart'
+
+    const cartPath = `/${t('cart', { ns: 'routes' })}`
+    const isOnCartPage = pathname === cartPath
     return (
         <>
             <div
@@ -65,7 +68,7 @@ export default function Navbar() {
                 </nav>
 
                 {!isOnCartPage && (
-                    <Button className="hidden md:flex" onClick={() => push('/cart')}>
+                    <Button className="hidden md:flex" onClick={() => push(cartPath)}>
                         {productsCount > 0 && <Badge>{productsCount}</Badge>}
                         <div>{t('Card')}</div>
                         <ShopIcon />
@@ -107,13 +110,12 @@ const MobileMenu = ({ className }: ComponentPropsWithoutRef<'div'>) => {
 }
 
 const Links = ({ ...props }: ComponentPropsWithoutRef<'div'>) => {
-    const { t } = useTranslation(['common'])
-
+    const { t } = useTranslation(['common', 'routes'])
     return (
         <HoverGroup
             data={routes}
             renderItem={({ to, name }) => (
-                <Link href={to}>
+                <Link href={`/${t(to, { ns: 'routes' })}`}>
                     <a>{t(name)}</a>
                 </Link>
             )}

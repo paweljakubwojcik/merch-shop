@@ -23,11 +23,11 @@ export const getStaticProps: GetStaticProps<{
                 name,
                 products,
                 categoryGroups,
-                ...(await serverSideTranslations(locale, ['common'])),
+                ...(await serverSideTranslations(locale)),
             },
         }
     } catch (e) {
-        console.log(`Error ocured during static generation of category page`, e)
+        console.log(`Error ocurred during static generation of category page`, e)
         return {
             notFound: true,
         }

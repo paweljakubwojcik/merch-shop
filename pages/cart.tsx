@@ -12,7 +12,7 @@ import useWindowSize from '../hooks/useWindowSize'
 import sanitazeNumber from '../utils/sanitazeNumber'
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
-    props: { ...(await serverSideTranslations(locale, ['common', 'cart'])) },
+    props: { ...(await serverSideTranslations(locale)) },
 })
 
 const CartPage: NextPageWithLayout = () => {

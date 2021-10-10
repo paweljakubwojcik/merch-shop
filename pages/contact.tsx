@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import Layout from '../components/Layout'
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
-    props: { ...(await serverSideTranslations(locale, ['common'])) },
+    props: { ...(await serverSideTranslations(locale)) },
 })
 
 const Contact: NextPageWithLayout = () => {
