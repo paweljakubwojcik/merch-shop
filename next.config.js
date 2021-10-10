@@ -31,7 +31,7 @@ const redirects = localizedRoutesMap.reduce(
                 ...acc,
                 {
                     source: `/${locale}/${def}/:param*`,
-                    destination: `/${locale}/${pl}/:param*`,
+                    destination: `/${locale}/${foreign}/:param*`,
                     locale: false,
                     permanent: true,
                 },
