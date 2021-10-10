@@ -67,7 +67,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
         id,
     } = product
 
-    const { t } = useTranslation(['product', 'common'])
+    const { t } = useTranslation(['routes', 'product', 'common'])
     const dispatch = useAppDispatch()
 
     const handleAddToCard = () =>
@@ -89,7 +89,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
                         className={'grid grid-flow-col auto-cols-fr justify-items-center'}
                         data={categories}
                         renderItem={({ slug, categoryGroup, name }, i) => (
-                            <Link href={`/shop/${categoryGroup.slug}/${slug}`}>
+                            <Link href={`/${t('shop')}/${categoryGroup.slug}/${slug}`}>
                                 <a className="flex whitespace-nowrap">{name}</a>
                             </Link>
                         )}
@@ -101,7 +101,7 @@ const Product: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>
                     <h2 className="font-bold text-xl">{name}</h2>
                 </header>
                 <p>{price}PLN</p>
-                <Button onClick={handleAddToCard}>{t('Add To Card')}</Button>
+                <Button onClick={handleAddToCard}>{t('Add To Card', { ns: 'product' })}</Button>
             </div>
 
             <StyledImage image={image} alt={name} />

@@ -29,7 +29,7 @@ const routes = [
 
 export default function Navbar() {
     const productsCount = useAppSelector(getProductsCount)
-    const { pathname, push, locale } = useRouter()
+    const { pathname, push } = useRouter()
     const { t } = useTranslation(['common', 'routes'])
 
     const [menuOpen, setMenuOpen] = useState(false)
@@ -48,8 +48,8 @@ export default function Navbar() {
         setMenuOpen(false)
     }, [pathname])
 
-    const cartPath = `/${t('cart')}`
-    const isOnCartPage = pathname === cartPath
+    const cartPath = `/${t('cart', { ns: 'routes' })}`
+    const isOnCartPage = pathname === '/cart'
     return (
         <>
             <div
@@ -85,7 +85,7 @@ export default function Navbar() {
             {!isOnCartPage && (
                 <FloatingButton
                     className="md:hidden fixed border-none bottom-10 right-8 z-30"
-                    onClick={() => push('/cart')}
+                    onClick={() => push(cartPath)}
                 >
                     {productsCount > 0 && (
                         <Badge className="-translate-x-1/4 -translate-y-1/4 ">
