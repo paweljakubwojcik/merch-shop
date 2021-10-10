@@ -13,7 +13,7 @@ export default function ProductCard({
 }: ProductCardProps) {
     const { t } = useTranslation(['routes'])
     return (
-        <div {...props} className="max-w-md">
+        <div {...props} className="max-w-md w-full">
             <Link href={`/${t('product')}/${slug}`}>
                 <a className="relative group cursor-pointer  block">
                     <div className="absolute w-full h-full filter saturate-0">

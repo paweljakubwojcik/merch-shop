@@ -4,18 +4,20 @@ import { useEffect } from 'react'
 import { useAppSelector } from '../redux/hooks'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useRef } from 'react'
-import { Product } from '../redux/reducers/shoppingCart'
+import { addProduct, Product, removeProduct } from '../redux/reducers/shoppingCart'
 import getNewId from '../utils/getNewId'
 import { useTranslation } from 'react-i18next'
 import { X } from 'react-feather'
+import { useDispatch } from 'react-redux'
 
 type Change = {
     id: number
     message: string
     product: Product
+    action: ActionType
 }
 
-type ActionType = 'REMOVED' | 'ADDED' | 'MODYFIED'
+type ActionType = 'REMOVED' | 'ADDED'
 
 type Diff<T> = { payload: T; action: ActionType }
 
@@ -69,6 +71,7 @@ const getArrayDifference: (
 export default function CartChangeListener() {
     const { t } = useTranslation(['cartChangeListener'])
     const products = useAppSelector((state) => state.shoppingCart.products)
+    const dispatch = useDispatch()
     const productsSnapshot = useRef(products)
 
     const [changes, setChanges] = useState<Array<Change>>([])
@@ -89,6 +92,7 @@ export default function CartChangeListener() {
                 product: difference.payload,
                 id: getNewId(),
                 message,
+                action: difference.action,
             }
         },
         [t]
@@ -107,32 +111,42 @@ export default function CartChangeListener() {
         const newChange = getChange(difference)
 
         setChanges((prev) => [newChange, ...prev])
-        setTimeout(() => removeChange(newChange.id), 3000)
+        setTimeout(() => removeChange(newChange.id), 5000)
     }, [products, getChange, removeChange])
+
+    const undo = (change: Change) => {
+        switch (change.action) {
+            case 'REMOVED':
+                dispatch(addProduct(change.product))
+                break
+            case 'ADDED':
+                dispatch(removeProduct(change.product))
+                break
+        }
+        removeChange(change.id)
+    }
 
     return (
         <div className={'fixed bottom-0 right-0 p-4 flex flex-col max-w-full'}>
             <TransitionGroup>
                 {changes.map((change) => (
                     <CSSTransition classNames={'shift-right'} timeout={300} key={change.id}>
-                        <ChangeAnnouncer dismiss={() => removeChange(change.id)}>
-                            {change.message}
-                        </ChangeAnnouncer>
+                        <div className={'bg-white p-6 shadow-lg m-2 max-w-md text-sm'}>
+                            <div className="flex my-2">
+                                <div>{change.message}</div>
+                                <button onClick={() => removeChange(change.id)} className="mx-4">
+                                    <X size={28} />
+                                </button>
+                            </div>
+                            <div className="flex">
+                                <button className="text-red-500" onClick={() => undo(change)}>
+                                    Undo
+                                </button>
+                            </div>
+                        </div>
                     </CSSTransition>
                 ))}
             </TransitionGroup>
         </div>
     )
 }
-
-const ChangeAnnouncer = ({
-    children,
-    dismiss,
-}: ComponentPropsWithoutRef<'div'> & { dismiss: () => void }) => (
-    <div className={'flex bg-white p-6 shadow-lg m-2 max-w-md text-sm'}>
-        <button onClick={() => dismiss()}>
-            <X size={28} />
-        </button>
-        <div>{children}</div>
-    </div>
-)
