@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "baseUrl": "./"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "redux/middleware/undoable.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "redux/middleware/undoable.js", "plugins/localizedRoutesConfig.js"],
   "exclude": ["node_modules"]
 }
